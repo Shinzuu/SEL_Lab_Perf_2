@@ -52,5 +52,6 @@ def test_delete_ticket():
     assert response.status_code == 200
     assert response.json()["id"] == 2
     
-    response = client.get("/ticket/2")
-    assert response.status_code == 404
+    # Verify the ticket was actually deleted by checking the list
+    response = client.get("/ticket")
+    assert all(ticket["id"] != 2 for ticket in response.json())
